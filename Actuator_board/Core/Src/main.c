@@ -22,7 +22,10 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
+#include <stdbool.h>
 #include "actuator_control.h"
+#include "can.h"
+#include "test.h"
 
 /* USER CODE END Includes */
 
@@ -47,6 +50,9 @@
 FDCAN_HandleTypeDef hfdcan1;
 
 /* USER CODE BEGIN PV */
+
+volatile uint32_t can_rx_msg = 0;
+volatile bool new_can_msg = false;
 
 /* USER CODE END PV */
 
@@ -114,7 +120,10 @@ int main(void)
   HAL_GPIO_WritePin(serial_data_GPIO_Port, serial_data_Pin, GPIO_PIN_RESET);
   HAL_GPIO_WritePin(latch_GPIO_Port, latch_Pin, GPIO_PIN_RESET);
 
+  can_init();
+
   uint32_t start_period = HAL_GetTick();
+  uint32_t local_state = 0;
 
   /* USER CODE END 2 */
 
@@ -126,6 +135,15 @@ int main(void)
 		  start_period = HAL_GetTick();
 		  HAL_GPIO_TogglePin(alive_GPIO_Port, alive_Pin);
 	  }
+
+//	  if (new_can_msg) {
+//		  new_can_msg = false;
+//
+//		  local_state = can_rx_msg;
+//		  set_actuator_state(local_state);
+//	  }
+
+	  test1();
 
 
     /* USER CODE END WHILE */
