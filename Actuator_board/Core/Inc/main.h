@@ -57,6 +57,14 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define serial_clock_Pin GPIO_PIN_5
+#define serial_clock_GPIO_Port GPIOA
+#define latch_Pin GPIO_PIN_6
+#define latch_GPIO_Port GPIOA
+#define serial_data_Pin GPIO_PIN_7
+#define serial_data_GPIO_Port GPIOA
+#define alive_Pin GPIO_PIN_15
+#define alive_GPIO_Port GPIOA
 
 /* USER CODE BEGIN Private defines */
 
