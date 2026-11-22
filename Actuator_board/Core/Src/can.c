@@ -5,7 +5,6 @@
  *      Author: Vladimir
  */
 
-
 #include "can.h"
 
 extern FDCAN_HandleTypeDef hfdcan1;
@@ -21,17 +20,14 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
 
     if (HAL_FDCAN_GetRxMessage(hfdcan, FDCAN_RX_FIFO0, &RxHeader, data) == HAL_OK) {
     	if (RxHeader.DataLength == FDCAN_DLC_BYTES_4 && RxHeader.RxFrameType == FDCAN_DATA_FRAME) {
-    		can_rx_msg = (((uint32_t)data[0]) | ((uint32_t)data[1] << 8) | ((uint32_t)data[2] << 16) | ((uint32_t)data[3] << 24));
+    		can_rx_msg = (((uint32_t)data[3]) | ((uint32_t)data[2] << 8) | ((uint32_t)data[1] << 16) | ((uint32_t)data[0] << 24));
     		new_can_msg = true;
     	}
     }
 
-
 }
 
 void can_init(void) {
-
-
     FDCAN_FilterTypeDef f;
     f.IdType       = FDCAN_STANDARD_ID;
     f.FilterIndex  = 0;
