@@ -22,6 +22,8 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
+#include "actuator_control.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -31,6 +33,8 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+
+#define ALIVE_PIN_PERIOD 500
 
 /* USER CODE END PD */
 
@@ -56,6 +60,21 @@ static void MX_FDCAN1_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+
+void DWT_Init(void)
+{
+    CoreDebug->DEMCR |= CoreDebug_DEMCR_TRCENA_Msk;
+    DWT->CYCCNT = 0;
+    DWT->CTRL |= DWT_CTRL_CYCCNTENA_Msk;
+}
+
+void delay_us(uint32_t us)
+{
+    uint32_t start = DWT->CYCCNT;
+    uint32_t cycles = us * (SystemCoreClock / 1000000U);
+
+    while ((uint32_t)(DWT->CYCCNT - start) < cycles);
+}
 
 /* USER CODE END 0 */
 
@@ -103,7 +122,8 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  if ((HAL_GetTick() - start_period) >= 500) {
+	  if ((HAL_GetTick() - start_period) >= ALIVE_PIN_PERIOD) {
+		  start_period = HAL_GetTick();
 		  HAL_GPIO_TogglePin(alive_GPIO_Port, alive_Pin);
 	  }
 
