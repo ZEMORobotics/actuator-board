@@ -50,9 +50,12 @@
 FDCAN_HandleTypeDef hfdcan1;
 
 /* USER CODE BEGIN PV */
-
 volatile uint32_t can_rx_msg = 0;
 volatile bool new_can_msg = false;
+//debug var
+volatile uint32_t counter = 0;
+volatile uint32_t can_counter = 0;
+
 
 /* USER CODE END PV */
 
@@ -80,6 +83,7 @@ void delay_us(uint32_t us)
     uint32_t cycles = us * (SystemCoreClock / 1000000U);
 
     while ((uint32_t)(DWT->CYCCNT - start) < cycles);
+
 }
 
 /* USER CODE END 0 */
@@ -119,7 +123,9 @@ int main(void)
   HAL_GPIO_WritePin(serial_clock_GPIO_Port, serial_clock_Pin, GPIO_PIN_RESET);
   HAL_GPIO_WritePin(serial_data_GPIO_Port, serial_data_Pin, GPIO_PIN_RESET);
   HAL_GPIO_WritePin(latch_GPIO_Port, latch_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(alive_GPIO_Port, alive_Pin, GPIO_PIN_SET);
 
+  DWT_Init();
   can_init();
 
   uint32_t start_period = HAL_GetTick();
@@ -136,15 +142,16 @@ int main(void)
 		  HAL_GPIO_TogglePin(alive_GPIO_Port, alive_Pin);
 	  }
 
-//	  if (new_can_msg) {
-//		  new_can_msg = false;
-//
-//		  local_state = can_rx_msg;
-//		  set_actuator_state(local_state);
-//	  }
+	  if (new_can_msg) {
+		  new_can_msg = false;
+		  can_counter++;
+		  local_state = can_rx_msg;
+		  set_actuator_state(local_state);
+	  }
 
-	  test1();
-
+//	  test1();
+//	  test2();
+//	  test3();
 
     /* USER CODE END WHILE */
 

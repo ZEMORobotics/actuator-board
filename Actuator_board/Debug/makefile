@@ -60,8 +60,8 @@ all: main-build
 main-build: Actuator_board.elf secondary-outputs
 
 # Tool invocations
-Actuator_board.elf Actuator_board.map: $(OBJS) $(USER_OBJS) C:\Users\Vladimir\Desktop\zemo\actuator-board\Actuator_board\STM32G431KBTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "Actuator_board.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\Vladimir\Desktop\zemo\actuator-board\Actuator_board\STM32G431KBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Actuator_board.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Actuator_board.elf Actuator_board.map: $(OBJS) $(USER_OBJS) C:\Users\Vladimir\Desktop\actuator-board\Actuator_board\STM32G431KBTX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "Actuator_board.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\Vladimir\Desktop\actuator-board\Actuator_board\STM32G431KBTX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Actuator_board.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
